@@ -24,6 +24,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
 Route::get('/userstable', function () {
     $sortColumn = request()->query('sort_column', 'name');
     $sortOrder = request()->query('sort_order', 'asc');
@@ -33,7 +34,9 @@ Route::get('/userstable', function () {
     return view('userstable', compact('users', 'sortColumn', 'sortOrder'));
 })->middleware(['auth', 'verified'])->name('userstable');
 
-
+Route::get('/map', function () {
+    return view('map');
+})->middleware(['auth', 'verified'])->name('map');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

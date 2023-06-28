@@ -24,6 +24,13 @@
                     </x-nav-link>
                 </div>
 
+                <!-- Map -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('map')" :active="request()->routeIs('map')">
+                        {{ __('Map') }}
+                    </x-nav-link>
+                </div>
+
 
             </div>
 
@@ -84,6 +91,12 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('userstable')" :active="request()->routeIs('userstable')">
                 {{ __('Users table') }}
+            </x-responsive-nav-link>
+        </div>
+
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('userstable')" :active="request()->routeIs('userstable')">
+                {{ __('Map') }}
             </x-responsive-nav-link>
         </div>
 
