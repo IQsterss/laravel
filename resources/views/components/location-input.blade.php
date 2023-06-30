@@ -15,7 +15,7 @@
             @method('put')
         @endif
 
-        <div>
+        <div class="mt-4 mb-4">
             <x-input-label for="name" :value="__('Name')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $location->name ?? '')" required
                 autofocus />
@@ -23,21 +23,21 @@
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
-        <div>
+        <div class="mt-4 mb-4">
             <x-input-label for="latitude" :value="__('Latitude')" />
             <x-text-input id="latitude" name="latitude" type="text" class="mt-1 block w-full" :value="old('name', $location->latitude ?? '')"
                 required />
             <x-input-error class="mt-2" :messages="$errors->get('latitude')" />
         </div>
 
-        <div>
+        <div class="mt-4 mb-4">
             <x-input-label for="longitude" :value="__('Longitude')" />
             <x-text-input id="longitude" name="longitude" type="text" class="mt-1 block w-full" :value="old('name', $location->longitude ?? '')"
                 required />
             <x-input-error class="mt-2" :messages="$errors->get('longitude')" />
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 mt-4 mb-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'location-saved')

@@ -23,13 +23,13 @@
             </x-danger-button>
         </form>
 
-        <form style="margin:0 .5rem 0 0 0" method="post" action="{{ route('locations.update', $id) }}">
+        <!-- <form style="margin:0 .5rem 0 0 0" method="post" action="{{ route('locations.update', $id) }}">
             @csrf
             @method('put')
             <x-secondary-button id="editButton" onclick="enableFields()">
                 {{ __('Edit') }}
             </x-secondary-button>
-        </form>
+        </form> -->
     </div>
 </a>
 
