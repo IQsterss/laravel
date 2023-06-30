@@ -22,64 +22,64 @@
 
     }
 
-        // function placeMarker(latitude, longitude) {
-        //     placemark = new ymaps.Placemark([latitude, longitude]);
-        //     map.geoObjects.add(placemark);
-        //     placemarks.push(placemark);
-        //     map.panTo([latitude, longitude], { flying: true });
-        // }
+        function placeMarker(latitude, longitude) {
+            placemark = new ymaps.Placemark([latitude, longitude]);
+            map.geoObjects.add(placemark);
+            placemarks.push(placemark);
+            map.panTo([latitude, longitude], { flying: true });
+        }
 
-        // function removeMarkers() {
-        //     map.geoObjects.removeAll();
-        //     placemarks = [];
-        // }
+        function removeMarkers() {
+            map.geoObjects.removeAll();
+            placemarks = [];
+        }
 
-        // //получение геолокации и местонахождения пользователя
-        // function getUserLocation() {
-        //     if (navigator.geolocation) {
-        //         navigator.geolocation.getCurrentPosition(
-        //             function (position) {
-        //                 var latitude = position.coords.latitude;
-        //                 var longitude = position.coords.longitude;
-        //                 // Инициализация карты с полученными координатами
-        //                 init(latitude, longitude);
-        //             },
-        //             function (error) {
-        //                 console.log(error);
-        //             }
-        //         );
-        //     } 
-        //     else {
-        //         console.log("Геолокация не поддерживается в вашем браузере");
-        //     }
-        // }
+        //получение геолокации и местонахождения пользователя
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    function (position) {
+                        var latitude = position.coords.latitude;
+                        var longitude = position.coords.longitude;
+                        // Инициализация карты с полученными координатами
+                        init(latitude, longitude);
+                    },
+                    function (error) {
+                        console.log(error);
+                    }
+                );
+            } 
+            else {
+                console.log("Геолокация не поддерживается в вашем браузере");
+            }
+        }
 
-        // function handlePlaceMarker() {
-        //     var latitudeInput = document.getElementById("latitude");
-        //     var longitudeInput = document.getElementById("longitude");
+        function handlePlaceMarker() {
+            var latitudeInput = document.getElementById("latitude");
+            var longitudeInput = document.getElementById("longitude");
 
-        //     var latitude = parseFloat(latitudeInput.value);
-        //     var longitude = parseFloat(longitudeInput.value);
+            var latitude = parseFloat(latitudeInput.value);
+            var longitude = parseFloat(longitudeInput.value);
 
-        //     if (!isNaN(latitude) && !isNaN(longitude)) {
-        //         placeMarker(latitude, longitude);
-        //     } else {
-        //         console.log("Неверные координаты");
-        //     }
-        // }
+            if (!isNaN(latitude) && !isNaN(longitude)) {
+                placeMarker(latitude, longitude);
+            } else {
+                console.log("Неверные координаты");
+            }
+        }
 
-        // function handleRemoveMarkers() {
-        //     removeMarkers();
-        // }
+        function handleRemoveMarkers() {
+            removeMarkers();
+        }
 
-        // getUserLocation();
+        getUserLocation();
         
         
-        // var placeMarkerButton = document.getElementById("place-marker-button");
-        // placeMarkerButton.addEventListener("click", handlePlaceMarker);
+        var placeMarkerButton = document.getElementById("place-marker-button");
+        placeMarkerButton.addEventListener("click", handlePlaceMarker);
 
-        // var removeMarkersButton = document.getElementById("remove-markers-button");
-        // removeMarkersButton.addEventListener("click", handleRemoveMarkers);
+        var removeMarkersButton = document.getElementById("remove-markers-button");
+        removeMarkersButton.addEventListener("click", handleRemoveMarkers);
         });
     </script>
     

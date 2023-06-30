@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use Illuminate\Http\Request;
+use App\Http\Requests\LocationRequest;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class LocationController extends Controller
 {
@@ -13,36 +17,35 @@ class LocationController extends Controller
         
         $locations = auth()->user()->locations;
         $selectedLocationId = $request->get("location");
-        return view( "locations", compact("locations", "selectedLocationId"));
+        return view( "locations.index", compact("locations", "selectedLocationId"));
     }
 
-    public function create()
-    {
-        return view("locations.create");
-    }
 
-    public function store(Request $request)
+
+    public function store(Request $request): RedirectResponse
     {
+
         $request->validate([
-            "name" => ["required", "string"],
-            "longitude" => ["required", "string"],
-            "latitude" => ["required","string"],
-            
+            "name" => ["required", "string", "max:255"],
+            "latitude" => ["required", "numeric", "min:-85", "max:85"],
+            "longitude" => ["required", "numeric", "min:-180", "max:180"],
         ]);
-            
+
         $location = new Location([
             "user_id" => auth()->id(),
             "name" => $request->get("name"),
-            "longitude" => $request->get("longitude"),
             "latitude" => $request->get("latitude"),
-        ]); 
+            "longitude" => $request->get("longitude"),
+        ]);
 
         $location->save();
 
-        return Redirect::route("locations")->with(
+        return Redirect::route("locations.index")->with(
             "status",
-            "location-saved");
+            "location-saved"
+        );
     }
+    
 
     public function show()
     {
@@ -55,23 +58,13 @@ class LocationController extends Controller
         return readirect("locations.edit", compact("location"));
     }
 
-    public function update(Request $request, Location $location)
+    public function update( LocationRequest $request,  Location $location): RedirectResponse
     {
-        $request->validate([
-            "name" => "required",
-            "longitude" => "required",
-            "latitude" => "required",
-        ]);
-
-        $location->fill([
-            "name" => $request->get("name"),
-            "longitude" => $request->get("longitude"),
-            "latitude" => $request->get("latitude"),
-        ]);
+        $location->fill($request->validated());
 
         $location->save();
 
-        return redirect("/locations");
+        return redirect()->route("locations.index")->with("success", "Location saved!");
     }
 
     public function destroy(Location $location)
