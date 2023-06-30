@@ -4,6 +4,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\LocationController;
+use App\Models\Location;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +27,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
+
 Route::get('/userstable', function () {
     $sortColumn = request()->query('sort_column', 'name');
     $sortOrder = request()->query('sort_order', 'asc');
@@ -34,9 +37,10 @@ Route::get('/userstable', function () {
     return view('userstable', compact('users', 'sortColumn', 'sortOrder'));
 })->middleware(['auth', 'verified'])->name('userstable');
 
-Route::get('/map', function () {
-    return view('map');
-})->middleware(['auth', 'verified'])->name('map');
+
+Route::resource("/locations", LocationController::class)->middleware(['auth', 'verified']);
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
