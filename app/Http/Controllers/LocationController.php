@@ -8,6 +8,7 @@ use App\Http\Requests\LocationRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Validation\Rule;
 
 class LocationController extends Controller
 {
@@ -24,11 +25,26 @@ class LocationController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-
+        
         $request->validate([
-            "name" => ["required", "string", "max:255"],
-            "latitude" => ["required", "numeric", "min:-90", "max:90"],
-            "longitude" => ["required", "numeric", "min:-180", "max:180"],
+            "name" => ["required", "string", "max:255", 
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                    ->where('name', $request->name);
+            })],
+            "latitude" => ["required", "numeric", "min:-90", "max:90",
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                ->where('latitude', $request->latitude)
+                ->where('longitude', $request->longitude);
+            })],
+            "longitude" => ["required", "numeric", "min:-180", "max:180",
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                ->where('latitude', $request->latitude)
+                ->where('longitude', $request->longitude);
+
+            })],
         ]);
 
         $location = new Location([
@@ -60,8 +76,27 @@ class LocationController extends Controller
 
     public function update( LocationRequest $request,  Location $location): RedirectResponse
     {
-        $location->fill($request->validated());
+        $location->fill($request->validate([
+            "name" => ["required", "string", "max:255", 
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                    ->where('name', $request->name);
+            })],
+            "latitude" => ["required", "numeric", "min:-90", "max:90",
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                ->where('latitude', $request->latitude)
+                ->where('longitude', $request->longitude);
+            })],
+            "longitude" => ["required", "numeric", "min:-180", "max:180",
+            Rule::unique('locations')->where(function ($query) use ($request) {
+                return $query->where('user_id', auth()->id())
+                ->where('latitude', $request->latitude)
+                ->where('longitude', $request->longitude);
 
+            })],
+        ])
+    );
         $location->save();
 
         return redirect()->route("locations.index")->with("success", "Location saved!");
