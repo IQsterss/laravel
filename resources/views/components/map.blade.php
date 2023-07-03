@@ -15,7 +15,7 @@
             center: selectedLocation?[selectedLocation.latitude,selectedLocation.longitude]:[0, 0],
             zoom: 12 } , {
             searchControlProvider: 'yandex#search'
-            }); 
+            });
             if(!selectedLocation){
                 geolocation.get({
                     provider: 'browser',
