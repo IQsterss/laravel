@@ -39,12 +39,43 @@ class TelegramController extends Controller
     if ($request->message['text'] === '/employees') {
         // Получение данных о времени отслеживания сотрудников от Hubstaff
         $employeesTime = $this->hubstaffService->getWeeklyTrackingTime();
+        //\Log::info($employeesTime);
         foreach ($employeesTime as $userId => $trackedTime) {
             $employeesName = $this->hubstaffService->getNameID($userId);
-            $employeesTimeUser = $trackedTime / 3600;
-            $text .=  "User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n";
-            \Log::info("User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n");
+            $totalSeconds = $trackedTime;
+            $totalDays = floor($totalSeconds / (24 * 60 * 60));
+            $remainingSeconds = $totalSeconds % (24 * 60 * 60);
+            $employeesTimeUser = $totalDays . " дней, " .gmdate("H:i", $trackedTime). " часов и минут";
+            $text .=  "Имя работника : $employeesName, затраченное время : $employeesTimeUser \r\n\n";
+            //\Log::info("User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n");
         }
+        //$project = $this->hubstaffService->getProject();
+        //\Log::info("User ID: $project");
+        // $projectI = $this->hubstaffService->getWeeklyTrackingTimeProject();
+        // \Log::info("User ID: $projectI");
+
+        
+    }
+    if ($request->message['text'] === '/project') {
+        // Получение данных о времени отслеживания сотрудников от Hubstaff
+        $employeesTimeProject = $this->hubstaffService->getWeeklyTrackingTimeProject();
+        //\Log::info($employeesTimeProject);
+        foreach ($employeesTimeProject as $projectId => $trackedTimeProject) {
+            //\Log::info($projectId);
+            $employeesLabel = $this->hubstaffService->getProjectName($projectId);
+            //\Log::info("User ID: $employeesLabel, Tracked Time: $trackedTimeProject hours\r\n");
+            $totalSeconds = $trackedTimeProject ;
+            $totalDays = floor($totalSeconds / (24 * 60 * 60));
+            $remainingSeconds = $totalSeconds % (24 * 60 * 60);
+            $employeesTimeProject = $totalDays . " дней, " .gmdate("H:i", $trackedTimeProject). " часов и минут";
+            $text .=  "Название проекта: $employeesLabel, затраченное время : $employeesTimeProject \r\n\n";
+            //\Log::info("User ID: $employeesLabel, Tracked Time: $employeesTimeProject hours\r\n");
+        }
+        //$project = $this->hubstaffService->getProject();
+        //\Log::info("User ID: $project");
+        // $projectI = $this->hubstaffService->getWeeklyTrackingTimeProject();
+        // \Log::info("User ID: $projectI");
+
         
     }
 
