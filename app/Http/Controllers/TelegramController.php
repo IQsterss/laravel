@@ -42,15 +42,14 @@ class TelegramController extends Controller
         //\Log::info($employeesTime);
         foreach ($employeesTime as $userId => $trackedTime) {
             $employeesName = $this->hubstaffService->getNameID($userId);
-            $totalSeconds = $trackedTime;
-            $totalDays = floor($totalSeconds / (24 * 60 * 60));
-            $remainingSeconds = $totalSeconds % (24 * 60 * 60);
-            $employeesTimeUser = $totalDays . " дней, " .gmdate("H:i", $trackedTime). " часов и минут";
+            $totalHours = floor($trackedTime/ 3600);
+            $totalMinutes = floor(($trackedTime / 60) % 60);
+            $employeesTimeUser = $totalHours . " часов, " .$totalMinutes. " минут";
             $text .=  "Имя работника : $employeesName, затраченное время : $employeesTimeUser \r\n\n";
             //\Log::info("User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n");
         }
         //$project = $this->hubstaffService->getProject();
-        //\Log::info("User ID: $project");
+        //\Log::info("User ID: $project");ы
         // $projectI = $this->hubstaffService->getWeeklyTrackingTimeProject();
         // \Log::info("User ID: $projectI");
 
@@ -64,10 +63,9 @@ class TelegramController extends Controller
             //\Log::info($projectId);
             $employeesLabel = $this->hubstaffService->getProjectName($projectId);
             //\Log::info("User ID: $employeesLabel, Tracked Time: $trackedTimeProject hours\r\n");
-            $totalSeconds = $trackedTimeProject ;
-            $totalDays = floor($totalSeconds / (24 * 60 * 60));
-            $remainingSeconds = $totalSeconds % (24 * 60 * 60);
-            $employeesTimeProject = $totalDays . " дней, " .gmdate("H:i", $trackedTimeProject). " часов и минут";
+            $totalHours = floor($trackedTimeProject / 3600);
+            $totalMinutes = floor(($trackedTimeProject / 60) % 60);
+            $employeesTimeProject = $totalHours . " часов, " .$totalMinutes. " минут";
             $text .=  "Название проекта: $employeesLabel, затраченное время : $employeesTimeProject \r\n\n";
             //\Log::info("User ID: $employeesLabel, Tracked Time: $employeesTimeProject hours\r\n");
         }
