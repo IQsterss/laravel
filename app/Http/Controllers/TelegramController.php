@@ -27,24 +27,23 @@ class TelegramController extends Controller
         //if first time ->send first time message
         if(!cache()->has("chat_id_{$chat_id}")){
             $text="Welcome to Al+S+_b0t 🤖\r\n";
-            $text.="Please upload a IMAGE and enjoy the magic";
 
             cache()->put("chat_id_{$chat_id}",true,now()->addMinute(60));
 
         //if chat is photo->Extract text from photo 
-         }//else{
-        //     $text="Al+S+_b0t 🤖\r\n\r\n";
+         } else{
+            $text="Al+S+_b0t 🤖\r\n\r\n";
 
-        // }   
+        }   
     // Обработка команды /employees
     if ($request->message['text'] === '/employees') {
-
         // Получение данных о времени отслеживания сотрудников от Hubstaff
         $employeesTime = $this->hubstaffService->getWeeklyTrackingTime();
         foreach ($employeesTime as $userId => $trackedTime) {
+            $employeesName = $this->hubstaffService->getNameID($userId);
             $employeesTimeUser = $trackedTime / 3600;
-            $text .=  "User ID: $userId, Tracked Time: $employeesTimeUser hours\r\n";
-            \Log::info("User ID: $userId, Tracked Time: $employeesTimeUser hours\r\n");
+            $text .=  "User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n";
+            \Log::info("User ID: $employeesName, Tracked Time: $employeesTimeUser hours\r\n");
         }
         
     }

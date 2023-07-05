@@ -29,10 +29,12 @@ class HubstaffService
                 'date[stop]' => $endDate,
             ],
         ]);
+
         $data = json_decode($response->getBody()->getContents(), true);
         \Log::info($data);
         $dailyActivities = $data['daily_activities'];
-        $totalTrackedId = [111=>30033];
+        $totalTrackedId = [];
+        //$totalTrackedId = [111=>30033];
 
         foreach ($dailyActivities as $activity) {
             $userId = $activity['user_id'];
@@ -52,11 +54,20 @@ class HubstaffService
         $endDate = now()->format('Y-m-d');
 
         $totalTracked = $this->getEmployeesTrackingTime($startDate, $endDate);
-        // Вывод общего затраченного времени за неделю
-        //\Log::info("Total Weekly Tracked Time: {$totalTracked} seconds");
 
         return $totalTracked;
     }
+    public function getNameID($userId)
+    {
+        $response = $this->httpClient->get("users/{$userId}");
+        $responseBody = $response->getBody()->getContents();
+        $data = json_decode($responseBody, true);
+        //\Log::info("project title", ["response" => $response]);
+        \Log::info($data);
+        $userNameId=$data['user']['name'];
+        return $userNameId;
+    }
+
 }
 
 
