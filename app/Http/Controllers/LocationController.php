@@ -8,6 +8,7 @@ use App\Http\Requests\LocationRequest;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Gate;
 
 class LocationController extends Controller
 {
@@ -25,6 +26,7 @@ class LocationController extends Controller
     public function store(Request $request): RedirectResponse
     {
 
+
         $request->validate([
             "name" => ["required", "string", "max:255"],
             "latitude" => ["required", "numeric", "min:-90", "max:90"],
@@ -38,6 +40,7 @@ class LocationController extends Controller
             "longitude" => $request->get("longitude"),
         ]);
 
+        
         $location->save();
 
         return Redirect::route("locations.index")->with(
@@ -60,6 +63,9 @@ class LocationController extends Controller
 
     public function update( LocationRequest $request,  Location $location): RedirectResponse
     {
+        if (! Gate::allows('update-location', $location)) {
+            abort(403);
+        }
         $location->fill($request->validated());
 
         $location->save();
@@ -69,8 +75,11 @@ class LocationController extends Controller
 
     public function destroy(Location $location)
     {
+        if (! Gate::allows('delete-location', $location)) {
+            abort(403);
+        }
         $location->delete();
-
+        
         return redirect("/locations");
     }
 }
